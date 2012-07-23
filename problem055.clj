@@ -1,5 +1,8 @@
 ;;Write a function which returns a map containing the number of occurences of each distinct item in a sequence.
 
+;;#(reduce (fn [c x] (assoc c x (inc (get c x 0)))) {} %)
+;;(fn [a] (reduce #(assoc % %2 (inc (get % %2 0))) {} a))
+
 (let [__ #(reduce (fn [c x] (assoc c x (inc (get c x 0)))) {} %)]
   (every? true?
           [(= (__ [1 1 2 3 2 1 1]) {1 4, 2 2, 3 1})
