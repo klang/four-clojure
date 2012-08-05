@@ -26,11 +26,6 @@
       (iterate
          (fn [c]
            `[~(first c) ~@(map #(apply + %) (partition 2 1 c)) ~(last c)]) [3 1 2]))
-(take 66
-      (iterate
-         (fn [c]
-           `[~(first c) ~@(map #(apply +' %) (partition 2 1 c)) ~(last c)]) [2 4 2]))
-
 
 ( (fn [c]
     `[~(c 0) ~@(map #(apply + %) (partition 2 1 c)) ~(last c)]) [2 3 2])

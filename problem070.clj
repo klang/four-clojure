@@ -32,3 +32,5 @@
 (clojure.string/replace "abcad." #"[-\W]+" "" )
 
 (.replace "abcad." #"([a-z]+)" "" )
+
+;;(re-seq #"\w+"  "Fools fall for foolish follies.")
