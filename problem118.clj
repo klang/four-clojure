@@ -12,13 +12,29 @@
                    (take 2)))]
           ))
 
+ (inc (first [3 4 5 6 7]))
+
+(rest [3 4 5 6 7])
+
+((fn m [f x] (cons (f (first x)) (lazy-seq m f (rest x)))) inc [2 3 4 5 6])
+
+
+
+(lazy-seq  )
 ;; problem 062 (iterate)
 ;;(fn i [f x] (cons x (lazy-seq (i f (f x)))))
 ;;#(reductions(fn[x _](% x))%2(range))
 
+;; (fn i [f x] (cons x (lazy-seq (i f (f x)))))
+
 ((fn m [f x] (cons (f (first x)) (lazy-seq m f (rest x)))) inc [2 3 4 5 6])
+
 
 (def x [2 3 4 5 6])
 (inc (first x))
 (rest x)
 
+( (fn m [f x]
+    (cons (f (first x))
+	  (lazy-seq (m f (rest x)))))
+  inc [2 3 4 5 6])
