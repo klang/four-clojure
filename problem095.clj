@@ -11,15 +11,23 @@
       (and (= 3 (count t)) (f a) (f b)))
     (nil? t)))
 
-(let [__ (fn t [n] (cond
-		    (and
+;;first
+(fn t [n] (cond
+	   (and
+	    (coll? n)
+	    (= 3 (count n))
+	    (or (nil? (nth n 1)) (t (nth n 1)))
+	    (or (nil? (nth n 2)) (t (nth n 2))))
+	   true
+	   :else
+	   false))
+
+;;second
+(let [__ (fn t [n] (and
 		     (coll? n)
 		     (= 3 (count n))
 		     (or (nil? (nth n 1)) (t (nth n 1)))
-		     (or (nil? (nth n 2)) (t (nth n 2))))
-		    true
-		    :else
-		    false))]
+		     (or (nil? (nth n 2)) (t (nth n 2)))))]
   (every? true?
 	  [(= (__ '(:a (:b nil nil) nil))
 	      true)
