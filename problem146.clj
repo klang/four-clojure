@@ -8,6 +8,7 @@
  '{a {p 1, q 2}
    b {m 3, n 4}})
 
+;; chouser: #(into {} (for [[a b] % [c d] b] [[a c] d]))
 
 (let [__ #(apply merge-with merge (for [[k v] % [i j] v]{[k i] j})) ]
   (every? true?
