@@ -14,3 +14,16 @@
 ;; an expression that evaluates to true
 ;; --> (true? nil) => false
 
+(let [x nil] (and (= (class x) x) x))
+(let [x false] (and (= (class x) x) x))
+(let [x true] (and (= (class x) x) x))
+(let [x (java.lang.Boolean. "true")] (and (= (class x) x) x))
+(let [x (java.lang.Boolean. "false")] (and (= (class x) x) x))
+(let [x #()] (and (= (class x) x) x))
+(let [x class] (and (= (class x) x) x))
+(let [x []] (and (= (class x) x) x))
+(let [x ()] (and (= (class x) x) x))
+
+; .. (and true Class) is considered true so maybe..
+(let [x java.lang.Class] (and (= (class x) x) x))
+ 
