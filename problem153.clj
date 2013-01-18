@@ -15,18 +15,36 @@ Some of the test cases are a bit tricky, so pay a little more attention to them.
 (def __ 
   #(empty? (for [a % b % :when (and (not= a b) (not-empty ((comp set keep) a b)))] false)))
 
-( __ #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}}  )
+(__ #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}}  )
 
-( __ #{#{:a :b :c :d :e} #{:a :b :c :d} #{:a :b :c} #{:a :b} #{:a}}  )
+(__ #{#{:a :b :c :d :e} #{:a :b :c :d} #{:a :b :c} #{:a :b} #{:a}}  )
 
-( __
-  #{#{(#(-> *)) + (quote mapcat) #_ nil}
-    #{'+ '* mapcat (comment mapcat)}
-    #{(do) set contains? nil?}
-    #{, , , #_, , empty?}}
-  )
+
+
+
+(__ #{
+      #{(#(-> *)) + (quote mapcat) #_ nil}
+      #{(do) set contains? nil?}
+      ;;  #{'+ '* mapcat (comment mapcat)}
+      ;;  #{, , , #_, , empty?}
+      }
+    )
+
+(__ #{ #{(do) set contains? nil?}
+       #{, , , #_, , empty?}})
 
 (every? true? (map #(contains? % nil) #{#{nil :a} #{nil :b}}))
+(every? true? (map #(contains? % nil) #{#{:c :a} #{:c :b}}))
+
+[ (__ #{#{nil :a} #{nil :b}})
+  (__ #{#{:c :a} #{:c :b}})
+  (__ #{#{:c :a} #{:d :b}})]
+
+(def __ 
+     #(for [a % b % :when
+	    (and (not= a b)
+		 (not (every? true? (map (fn [x] (contains? x nil)) [a b])))
+		 (not-empty ((comp set keep) a b)))] false))
 
 (defn share-nil? [& m] (every? true? (map (fn [x] (contains? x nil)) m)))
 
@@ -43,6 +61,18 @@ Some of the test cases are a bit tricky, so pay a little more attention to them.
                    #{'+ '* mapcat (comment mapcat)}
                    #{(do) set contains? nil?}
                    #{, , , #_, , empty?}}))
+
+(__  #{#{nil 1} #{nil 2}})
+
+(not (identical? nil nil))
+
+(not= nil nil)
+
+(= (__ #{#{(#(-> *)) + (quote mapcat) #_ nil}
+            #{'+ '* mapcat (comment mapcat)}
+            #{(do) set contains? nil?}
+            #{, , , #_, , empty?}})
+      false)
 
 (let [__
       #(empty? (for [a % b %

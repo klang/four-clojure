@@ -10,3 +10,9 @@
 (interleave '(0 3 6) '(1 4 7) '(2 5 8) )
 
 (for [x (range 2) :let [y [1 2 3 4 5 6]]] [x y])
+
+(for [x (range 5) y (range 10)] {x y})
+(map )
+[ (filter #(= 0 (mod % 3)) (drop 0 (range 9)))
+  (filter #(= 0 (mod % 3)) (drop 1 (range 9)))
+  (filter #(= 0 (mod % 1)) (drop 2 (range 9)))]
