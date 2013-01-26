@@ -14,6 +14,8 @@
       #{#{}}))
   (seq %))
 
+;; "first" could have been "last", saving one char
+
 (let [__ 
 (fn P [S]
   (if (empty? S) #{#{}}
@@ -49,7 +51,7 @@
 
 (defn P [S]
   (if (empty? S) #{#{}}
-      (let [e (first S) 
+      (let [e (last S) 
             T (P (disj S e))] 
         (into T (map #(conj % e) T)))))
 
