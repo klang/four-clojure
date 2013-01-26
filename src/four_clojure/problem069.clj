@@ -1,6 +1,6 @@
 ;;Write a function which takes a function f and a variable number of maps.  Your function should return a map that consists of the rest of the maps conj-ed onto the first.  If a key occurs in more than one map, the mapping(s) from the latter (left-to-right) should be combined with the mapping in the result by calling (f val-in-result val-in-latter)
 
-(let [__ "Solution here"]
+(let [__ merge-with]
   (every? true?
           [(= (__ * {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5})
               {:a 4, :b 6, :c 20})
@@ -18,17 +18,24 @@
 
 (->> )
 
-(reduce  #(conj (or % {}) %2) '( {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5}))
+(reduce  #(conj (or % {})  %2) '( {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5}))
 
-(defn merge
-  "Returns a map that consists of the rest of the maps conj-ed onto
-  the first.  If a key occurs in more than one map, the mapping from
-  the latter (left-to-right) will be the mapping in the result."
-  {:added "1.0"
-   :static true}
-  [& maps]
-  (when (some identity maps)
-    (reduce1 #(conj (or %1 {}) %2) maps)))
+
+(#(* ) {:a 2 :b 3 :c 4} {:a 2})
+
+
+
+(reduce  #(conj (or % {})  (* () %2)) 
+         '( {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5} {:d 5}))
+
+(reduce * {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5} {:d 5})
+
+
+((fn [f & m]
+   (loop [H (first m) R (rest m)]
+     (if (empty? R) H
+         (recur (if (contains? H))))
+     )) {:a 2, :b 3, :c 4} {:a 2} {:b 2} {:c 5} {:d 5})
 
 
 (defn merge-with
