@@ -8,117 +8,64 @@ Some of the test cases are a bit tricky, so pay a little more attention to them.
 <p>
 <sup>1</sup>Such sets are usually called <i>pairwise disjoint</i> or <i>mutually disjoint</i>.
 </p>
-;; into set remove
-#(into (set (remove %2 %)) (remove % %2))
-((comp set keep) #{:a :b :c :d :e} #{:a :b :c :d})
 
-(def __ 
-  #(empty? (for [a % b % :when (and (not= a b) (not-empty ((comp set keep) a b)))] false)))
+;; cgrand:  #(apply distinct? (mapcat seq %))
+;; immo:    #(apply distinct? (apply concat %))
+;; chouser: #(let [s (for [x % i x] i)] (= (count s) (count (set s))))
+;; klang:   #(every? true? (for[A % B % :when(not= A B)](empty?(clojure.set/intersection A B))))
 
-(__ #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}}  )
-
-(__ #{#{:a :b :c :d :e} #{:a :b :c :d} #{:a :b :c} #{:a :b} #{:a}}  )
-
-
-
-
-(__ #{
-      #{(#(-> *)) + (quote mapcat) #_ nil}
-      #{(do) set contains? nil?}
-      ;;  #{'+ '* mapcat (comment mapcat)}
-      ;;  #{, , , #_, , empty?}
-      }
-    )
-
-(__ #{ #{(do) set contains? nil?}
-       #{, , , #_, , empty?}})
-
-(every? true? (map #(contains? % nil) #{#{nil :a} #{nil :b}}))
-(every? true? (map #(contains? % nil) #{#{:c :a} #{:c :b}}))
-
-[ (__ #{#{nil :a} #{nil :b}})
-  (__ #{#{:c :a} #{:c :b}})
-  (__ #{#{:c :a} #{:d :b}})]
-
-(def __ 
-     #(for [a % b % :when
-	    (and (not= a b)
-		 (not (every? true? (map (fn [x] (contains? x nil)) [a b])))
-		 (not-empty ((comp set keep) a b)))] false))
-
-(defn share-nil? [& m] (every? true? (map (fn [x] (contains? x nil)) m)))
-
-(share-nil? #{nil :a} #{nil :b})
-
-(def __ 
-  #(empty? (for [a % b % :when
-                 (and (not= a b)
-                      (not (every? true? (map (fn [x] (contains? x nil)) [a b])))
-                      (not-empty ((comp set keep) a b)))] false)))
-
-(some true? (map share-nil?
-                 #{#{(#(-> *)) + (quote mapcat) #_ nil}
-                   #{'+ '* mapcat (comment mapcat)}
-                   #{(do) set contains? nil?}
-                   #{, , , #_, , empty?}}))
-
-(__  #{#{nil 1} #{nil 2}})
-
-(not (identical? nil nil))
-
-(not= nil nil)
-
-(= (__ #{#{(#(-> *)) + (quote mapcat) #_ nil}
-            #{'+ '* mapcat (comment mapcat)}
-            #{(do) set contains? nil?}
-            #{, , , #_, , empty?}})
-      false)
-
-(let [__
-      #(empty? (for [a % b %
-                     :when
-                     (and (not= a b)
-                          (not-empty ((comp set keep) a b)))] false))
-      ]
-  #_(every? true?)
-  [(= (__ #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
-      true)
-   (= (__ #{#{:a :b :c :d :e}
-            #{:a :b :c :d}
-            #{:a :b :c}
-            #{:a :b}
-            #{:a}})
-      false)
-   (= (__ #{#{[1 2 3] [4 5]}
-            #{[1 2] [3 4 5]}
-            #{[1] [2] 3 4 5}
-            #{1 2 [3 4] [5]}})
-      true)
-   (= (__ #{#{'a 'b}
-            #{'c 'd 'e}
-            #{'f 'g 'h 'i}
-            #{''a ''c ''f}})
-      true)
-   (= (__ #{#{'(:x :y :z) '(:x :y) '(:z) '()}
-            #{#{:x :y :z} #{:x :y} #{:z} #{}}
-            #{'[:x :y :z] [:x :y] [:z] [] {}}})
-      false)
-   (= (__ #{#{(= "true") false}
-            #{:yes :no}
-            #{(class 1) 0}
-            #{(symbol "true") 'false}
-            #{(keyword "yes") ::no}
-            #{(class '1) (int \0)}})
-      false)
-   (= (__ #{#{distinct?}
-            #{#(-> %) #(-> %)}
-            #{#(-> %) #(-> %) #(-> %)}
-            #{#(-> %) #(-> %) #(-> %)}})
-      true)
-   (= (__ #{#{(#(-> *)) + (quote mapcat) #_ nil}
-            #{'+ '* mapcat (comment mapcat)}
-            #{(do) set contains? nil?}
-            #{, , , #_, , empty?}})
-      false)]
+(let [__ #(every? true? (for[A % B % :when(not= A B)](empty?(clojure.set/intersection A B))))]
+  (every? true?
+          [(= (__ #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+              true)
+           (= (__ #{#{:a :b :c :d :e}
+                    #{:a :b :c :d}
+                    #{:a :b :c}
+                    #{:a :b}
+                    #{:a}})
+              false)
+           (= (__ #{#{[1 2 3] [4 5]}
+                    #{[1 2] [3 4 5]}
+                    #{[1] [2] 3 4 5}
+                    #{1 2 [3 4] [5]}})
+              true)
+           (= (__ #{#{'a 'b}
+                    #{'c 'd 'e}
+                    #{'f 'g 'h 'i}
+                    #{''a ''c ''f}})
+              true)
+           (= (__ #{#{'(:x :y :z) '(:x :y) '(:z) '()}
+                    #{#{:x :y :z} #{:x :y} #{:z} #{}}
+                    #{'[:x :y :z] [:x :y] [:z] [] {}}})
+              false)
+           (= (__ #{#{(= "true") false}
+                    #{:yes :no}
+                    #{(class 1) 0}
+                    #{(symbol "true") 'false}
+                    #{(keyword "yes") ::no}
+                    #{(class '1) (int \0)}})
+              false)
+           (= (__ #{#{distinct?}
+                    #{#(-> %) #(-> %)}
+                    #{#(-> %) #(-> %) #(-> %)}
+                    #{#(-> %) #(-> %) #(-> %)}})
+              true)
+           (= (__ #{#{(#(-> *)) + (quote mapcat) #_ nil}
+                    #{'+ '* mapcat (comment mapcat)}
+                    #{(do) set contains? nil?}
+                    #{, , , #_, , empty?}})
+              false)])
           )
+
+(defn disjoint [A B]
+  (empty? (clojure.set/intersection A B)))
+
+(defn pairwise-disjoint [S]
+  #_(empty?) (set (for [A S B S :when (not= A B)] (disjoint A B))))
+
+(defn pairwise-disjoint [S]
+  (every? true? (for [A S B S :when (not= A B)] (disjoint A B) )))
+
+
+
 
