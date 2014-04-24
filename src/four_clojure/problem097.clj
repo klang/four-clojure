@@ -35,6 +35,7 @@
   (let [triangle (take n (iterate nextrow [1]))]
     (doseq [row triangle]
       (println row))))
+
 (defn factorial [n] 
   (reduce * (range n 0 -1)))
 

@@ -1,8 +1,14 @@
 ;;<p>A palindromic number is a number that is the same when written forwards or backwards (e.g., 3, 99, 14341).</p>
 
-<p>Write a function which takes an integer <code>n</code>, as its only argument, and returns an increasing lazy sequence of all palindromic numbers that are not less than <code>n</code>.</p>
+;; Write a function which takes an integer <code>n</code>, as its only argument, and returns an increasing lazy sequence of all palindromic numbers that are not less than <code>n</code>.
 
-<p>The most simple solution will exceed the time limit!</p>
+;; The most simple solution will exceed the time limit!
+(defn palindrome? [m] (= (vec (str m)) (reverse (str m))))
+(def __ #(filter palindrome? (range % Double/POSITIVE_INFINITY 1)))
+
+;; these will demand a lot of calculations with the above function:
+;; (__ 9999999)        
+;; (nth (__ 0) 10101) 
 
 (let [__ "Solution here"]
   (= (take 26 (__ 0))
@@ -24,18 +30,244 @@
   (= true 
      (apply < (take 6666 (__ 9999999))))
   (= (nth (__ 0) 10101)
-     9102019)
+            9102019)
   )
 
-(defn palindrome? [m]
-  (= (apply str (reverse (str m))) (str m)))
+;; Counting the Palindromes 
 
-(defn base10-and-base2-palindromes [n]
-  (filter #(and (palindrome? %) 
-		(palindrome? (. Integer toBinaryString %))) 
-	  (range n)))
+;; All the digits are palindromes (1,2,3,...,9).
 
-(defn solve036 [n] 
-  (reduce + 
-	  (base10-and-base2-palindromes n)))
+;; There are also 9 palindromes with two digits (11,22,33, ...,99).
+
+;; You can find to every two-digit number one, and only one number with three digits and with four digits. 
+;; For example: For the number 34 there are 343 and 3443. 
+;; You can conclude that there are 90 palindromes with three and also 90 palindromes with four digits.
+;; You can find to every three-digit number one, and only one number with five digits and with six digits. 
+;; For example: To the number 562 there are 56265 and 562265. 
+;; You can conclude that there are 900 palindromes with five and 900 palindromes with six digits.
+
+;; You have 9+9+90+90+900+900 = 1998 palindromes up to one million. That's 0,1998 %. About every 500th number is a palindrome.  
+
+(take 100 (map #(- % %2) (drop 1 (__ 0)) (__ 0) ))
+
+(take 200 (map #(vector %2 % (- % %2) (count (str %2)) (count (str %))) (drop 1 (__ 0)) (__ 0) ))
+
+([0 1 1 1 1]
+ [1 2 1 1 1]
+ [2 3 1 1 1]
+ [3 4 1 1 1]
+ [4 5 1 1 1]
+ [5 6 1 1 1]
+ [6 7 1 1 1]
+ [7 8 1 1 1]
+ [8 9 1 1 1]
+ [9 11 2 1 2]
+ [11 22 11 2 2]
+ [22 33 11 2 2]
+ [33 44 11 2 2]
+ [44 55 11 2 2]
+ [55 66 11 2 2]
+ [66 77 11 2 2]
+ [77 88 11 2 2]
+ [88 99 11 2 2]
+ [99 101 2 2 3]
+ [101 111 10 3 3]
+ [111 121 10 3 3]
+ [121 131 10 3 3]
+ [131 141 10 3 3]
+ [141 151 10 3 3]
+ [151 161 10 3 3]
+ [161 171 10 3 3]
+ [171 181 10 3 3]
+ [181 191 10 3 3]
+ [191 202 11 3 3]
+ [202 212 10 3 3]
+ [212 222 10 3 3]
+ [222 232 10 3 3]
+ [232 242 10 3 3]
+ [242 252 10 3 3]
+ [252 262 10 3 3]
+ [262 272 10 3 3]
+ [272 282 10 3 3]
+ [282 292 10 3 3]
+ [292 303 11 3 3]
+ [303 313 10 3 3]
+ [313 323 10 3 3]
+ [323 333 10 3 3]
+ [333 343 10 3 3]
+ [343 353 10 3 3]
+ [353 363 10 3 3]
+ [363 373 10 3 3]
+ [373 383 10 3 3]
+ [383 393 10 3 3]
+ [393 404 11 3 3]
+ [404 414 10 3 3]
+ [414 424 10 3 3]
+ [424 434 10 3 3]
+ [434 444 10 3 3]
+ [444 454 10 3 3]
+ [454 464 10 3 3]
+ [464 474 10 3 3]
+ [474 484 10 3 3]
+ [484 494 10 3 3]
+ [494 505 11 3 3]
+ [505 515 10 3 3]
+ [515 525 10 3 3]
+ [525 535 10 3 3]
+ [535 545 10 3 3]
+ [545 555 10 3 3]
+ [555 565 10 3 3]
+ [565 575 10 3 3]
+ [575 585 10 3 3]
+ [585 595 10 3 3]
+ [595 606 11 3 3]
+ [606 616 10 3 3]
+ [616 626 10 3 3]
+ [626 636 10 3 3]
+ [636 646 10 3 3]
+ [646 656 10 3 3]
+ [656 666 10 3 3]
+ [666 676 10 3 3]
+ [676 686 10 3 3]
+ [686 696 10 3 3]
+ [696 707 11 3 3]
+ [707 717 10 3 3]
+ [717 727 10 3 3]
+ [727 737 10 3 3]
+ [737 747 10 3 3]
+ [747 757 10 3 3]
+ [757 767 10 3 3]
+ [767 777 10 3 3]
+ [777 787 10 3 3]
+ [787 797 10 3 3]
+ [797 808 11 3 3]
+ [808 818 10 3 3]
+ [818 828 10 3 3]
+ [828 838 10 3 3]
+ [838 848 10 3 3]
+ [848 858 10 3 3]
+ [858 868 10 3 3]
+ [868 878 10 3 3]
+ [878 888 10 3 3]
+ [888 898 10 3 3]
+ [898 909 11 3 3]
+ [909 919 10 3 3]
+ [919 929 10 3 3]
+ [929 939 10 3 3]
+ [939 949 10 3 3]
+ [949 959 10 3 3]
+ [959 969 10 3 3]
+ [969 979 10 3 3]
+ [979 989 10 3 3]
+ [989 999 10 3 3]
+ [999 1001 2 3 4]
+ [1001 1111 110 4 4]
+ [1111 1221 110 4 4]
+ [1221 1331 110 4 4]
+ [1331 1441 110 4 4]
+ [1441 1551 110 4 4]
+ [1551 1661 110 4 4]
+ [1661 1771 110 4 4]
+ [1771 1881 110 4 4]
+ [1881 1991 110 4 4]
+ [1991 2002 11 4 4]
+ [2002 2112 110 4 4]
+ [2112 2222 110 4 4]
+ [2222 2332 110 4 4]
+ [2332 2442 110 4 4]
+ [2442 2552 110 4 4]
+ [2552 2662 110 4 4]
+ [2662 2772 110 4 4]
+ [2772 2882 110 4 4]
+ [2882 2992 110 4 4]
+ [2992 3003 11 4 4]
+ [3003 3113 110 4 4]
+ [3113 3223 110 4 4]
+ [3223 3333 110 4 4]
+ [3333 3443 110 4 4]
+ [3443 3553 110 4 4]
+ [3553 3663 110 4 4]
+ [3663 3773 110 4 4]
+ [3773 3883 110 4 4]
+ [3883 3993 110 4 4]
+ [3993 4004 11 4 4]
+ [4004 4114 110 4 4]
+ [4114 4224 110 4 4]
+ [4224 4334 110 4 4]
+ [4334 4444 110 4 4]
+ [4444 4554 110 4 4]
+ [4554 4664 110 4 4]
+ [4664 4774 110 4 4]
+ [4774 4884 110 4 4]
+ [4884 4994 110 4 4]
+ [4994 5005 11 4 4]
+ [5005 5115 110 4 4]
+ [5115 5225 110 4 4]
+ [5225 5335 110 4 4]
+ [5335 5445 110 4 4]
+ [5445 5555 110 4 4]
+ [5555 5665 110 4 4]
+ [5665 5775 110 4 4]
+ [5775 5885 110 4 4]
+ [5885 5995 110 4 4]
+ [5995 6006 11 4 4]
+ [6006 6116 110 4 4]
+ [6116 6226 110 4 4]
+ [6226 6336 110 4 4]
+ [6336 6446 110 4 4]
+ [6446 6556 110 4 4]
+ [6556 6666 110 4 4]
+ [6666 6776 110 4 4]
+ [6776 6886 110 4 4]
+ [6886 6996 110 4 4]
+ [6996 7007 11 4 4]
+ [7007 7117 110 4 4]
+ [7117 7227 110 4 4]
+ [7227 7337 110 4 4]
+ [7337 7447 110 4 4]
+ [7447 7557 110 4 4]
+ [7557 7667 110 4 4]
+ [7667 7777 110 4 4]
+ [7777 7887 110 4 4]
+ [7887 7997 110 4 4]
+ [7997 8008 11 4 4]
+ [8008 8118 110 4 4]
+ [8118 8228 110 4 4]
+ [8228 8338 110 4 4]
+ [8338 8448 110 4 4]
+ [8448 8558 110 4 4]
+ [8558 8668 110 4 4]
+ [8668 8778 110 4 4]
+ [8778 8888 110 4 4]
+ [8888 8998 110 4 4]
+ [8998 9009 11 4 4]
+ [9009 9119 110 4 4]
+ [9119 9229 110 4 4]
+ [9229 9339 110 4 4]
+ [9339 9449 110 4 4]
+ [9449 9559 110 4 4]
+ [9559 9669 110 4 4]
+ [9669 9779 110 4 4]
+ [9779 9889 110 4 4]
+ [9889 9999 110 4 4]
+ [9999 10001 2 4 5]
+ [10001 10101 100 5 5])
+
+
+[0 1 2 3 4 5 6 7 8 9 
+ 11 22 33 44 55 66 77 88 99 
+ 101 111 121 131 141 151 161 171 181 191
+ 202 212 222 232 242 252 262 272 282 292]
+
+(- 111 101)
+
+(comment
+  (defn palindrome? [m] (= (apply str (reverse (str m))) (str m)))
+  (defn palindrome? [m] (let [m (str m)] (= (vec m) (reverse m))))
+  (defn palindrome? [m] (= (vec (str m)) (reverse (str m))))
+  (take 26 (filter palindrome? (range 0 Double/POSITIVE_INFINITY 1)))
+  (def pseq #(filter palindrome? (range % Double/POSITIVE_INFINITY 1)))
+  (take 26 (pseq 0)))
+
+;; http://www.mathematische-basteleien.de/palindromes.html
 

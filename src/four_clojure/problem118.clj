@@ -31,3 +31,4 @@
 
 (cons (inc (first [2 3 4 5 6])) (map inc (rest [2 3 4 5 6])))
 
+(max)
